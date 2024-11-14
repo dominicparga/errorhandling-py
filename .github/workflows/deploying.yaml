@@ -1,0 +1,42 @@
+name: Deploying
+on:
+  workflow_run:
+    workflows: ["testing"]
+    branches: [stable]
+    types:
+      - completed
+
+permissions:
+  contents: read
+
+jobs:
+  publish-to-pypi:
+    name: Upload release to PyPI
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      # IMPORTANT: this permission is mandatory for trusted publishing
+      id-token: write
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.x'
+    - name: Display Python version
+      run: python -c "import sys; print(sys.version)"
+    - name: Install dependencies
+      run: |
+        apt install pipx && pipx ensurepath
+        python -m pip install --upgrade pip
+        pipx install poetry
+    - name: Build package
+      run: |
+        poetry lock
+        poetry install
+        poetry build --format wheel
+    - name: Publish package
+      uses: pypa/gh-action-pypi-publish@$GITHUB_SHA
+    - name: Publish package distributions to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
