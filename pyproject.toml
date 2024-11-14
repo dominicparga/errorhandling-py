@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "errorhandling"
+version = "1.0.0"
+description = "Errorhandling inspired by Rust"
+authors = ["dominicparga <dominic.parga@icloud.com>"]
+maintainers = ["dominicparga <dominic.parga@icloud.com>"]
+readme = "README.md"
+license = "Apache-2.0"
+packages = [{ include = "errorhandling" }]
+# include = [{ path = "dependencies", format = ["sdist", "wheel"] }]
+homepage = "https://github.com/dominicparga/errorhandling-py"
+repository = "https://github.com/dominicparga/errorhandling-py"
+documentation = "https://github.com/dominicparga/errorhandling-py"
+[tool.poetry.urls]
+Issues = "https://github.com/dominicparga/errorhandling-py/issues"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+# binaries and extras
+[tool.poetry.scripts]
+# -
+[tool.poetry.extras]
+# -
+
+
+[tool.poetry.dependencies]
+python = "^3.10"
+# extras' dependencies, hence optional by default
+# -
+[tool.poetry.group.dev.dependencies]
+# linting and formatting
+ruff = "*"
+# python testing
+pytest = "*"
