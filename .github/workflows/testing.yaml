@@ -1,4 +1,4 @@
-name: Tests
+name: Testing
 on:
   push:
   pull_request:
@@ -25,6 +25,7 @@ jobs:
         apt install pipx && pipx ensurepath
         python -m pip install --upgrade pip
         pipx install poetry
-        poetry install
+        poetry lock
+        poetry install --all-extras
     - name: Run tests
       run: poetry run -- pytest ./tests
