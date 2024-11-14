@@ -37,6 +37,4 @@ jobs:
         poetry install
         poetry build --format wheel
     - name: Publish package
-      uses: pypa/gh-action-pypi-publish@$GITHUB_SHA
-    - name: Publish package distributions to PyPI
-      uses: pypa/gh-action-pypi-publish@release/v1
+      uses: pypa/gh-action-pypi-publish@${{github.sha}}
