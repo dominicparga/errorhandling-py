@@ -1,23 +1,41 @@
-name: Deploying
+name: Testing and Deploying
 on:
-  workflow_run:
-    workflows: ["testing"]
-    branches: [stable]
-    types:
-      - completed
+  push:
+  pull_request:
 
 permissions:
   contents: read
 
 jobs:
+  unittests:
+    name: Unittesting
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+    - name: Display Python version
+      run: python -c "import sys; print(sys.version)"
+    - name: Install dependencies
+      run: |
+        apt install pipx && pipx ensurepath
+        python -m pip install --upgrade pip
+        pipx install poetry
+        poetry lock
+        poetry install --all-extras
+    - name: Run tests
+      run: poetry run -- pytest ./tests
   publish-to-pypi:
     name: Upload release to PyPI
     runs-on: ubuntu-latest
     environment: pypi
+    needs: unittests
     permissions:
       # IMPORTANT: this permission is mandatory for trusted publishing
       id-token: write
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: startsWith(github.ref, 'refs/tags/v')
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python
