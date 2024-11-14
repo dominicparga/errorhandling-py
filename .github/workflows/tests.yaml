@@ -1,0 +1,30 @@
+name: Tests
+on:
+  push:
+  pull_request:
+    branches:
+      - stable
+
+permissions:
+  contents: read
+
+jobs:
+  unittests:
+    name: Unittesting
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+    - name: Display Python version
+      run: python -c "import sys; print(sys.version)"
+    - name: Install dependencies
+      run: |
+        apt install pipx && pipx ensurepath
+        python -m pip install --upgrade pip
+        pipx install poetry
+        poetry install
+    - name: Run tests
+      run: pytest ./tests
