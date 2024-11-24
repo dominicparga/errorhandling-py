@@ -1,9 +1,41 @@
-from typing import Generic, TypeAlias, TypeVar
+from typing import Callable, Concatenate, Generic, ParamSpec, TypeAlias, TypeVar
 
 ErrorCode: TypeAlias = int
 
 _T = TypeVar("_T")
 _E = TypeVar("_E")
+_P = ParamSpec("_P")
+_R = TypeVar("_R")
+
+
+def private(fn: Callable[_P, _R]) -> Callable[Concatenate[bool, _P], _R]:
+	def private_init(ignore_private: bool = False, *args: _P.args, **kwargs: _P.kwargs) -> _R:
+		if not ignore_private:
+			raise Exception("This constructor shall be called privately only.")
+		result = fn(*args, **kwargs)
+		return result
+
+	return private_init
+
+
+def do(private_fn: Callable[Concatenate[bool, _P], _R]) -> Callable[_P, _R]:
+	"""
+	Very Important Procedure, ignoring the @private decorator.
+
+	```python
+	@private
+	def my_private_func(a: int) -> ...:
+		...
+
+	vip(my_private_func)(a=3)
+	```
+	"""
+
+	def non_private_init(*args: _P.args, **kwargs: _P.kwargs) -> _R:
+		result = private_fn(True, *args, **kwargs)
+		return result
+
+	return non_private_init
 
 
 class Result:
