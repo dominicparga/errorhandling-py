@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "errorhandling"
-version = "1.0.2"
+version = "1.1.0"
 description = "Errorhandling inspired by Rust"
 authors = ["dominicparga <dominic.parga@icloud.com>"]
 maintainers = ["dominicparga <dominic.parga@icloud.com>"]
@@ -28,7 +28,7 @@ build-backend = "poetry.core.masonry.api"
 
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.11"
 # extras' dependencies, hence optional by default
 # -
 [tool.poetry.group.dev.dependencies]
