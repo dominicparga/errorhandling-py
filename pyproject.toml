@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "errorhandling"
-version = "2.0.0"
+version = "2.0.1"
 description = "Errorhandling inspired by Rust"
 authors = ["dominicparga <dominic.parga@icloud.com>"]
 maintainers = ["dominicparga <dominic.parga@icloud.com>"]
