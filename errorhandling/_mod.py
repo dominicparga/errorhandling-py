@@ -26,10 +26,8 @@ class ErrorCode:
 	def is_err(self) -> bool:
 		return self._intvalue != 0
 
-	def consider(self, other: "ErrorCode | int") -> None:
-		if isinstance(other, ErrorCode):
-			other = other.intvalue
-		self._intvalue += other
+	def consider(self, other: "ErrorCode") -> None:
+		self._intvalue += other.intvalue
 
 
 class Result:
